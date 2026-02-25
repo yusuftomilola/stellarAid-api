@@ -425,7 +425,9 @@ export class AuthService {
     return { message: `KYC status updated to ${updateDto.status}` };
   }
 
-  async refreshToken(refreshTokenDto: RefreshTokenDto): Promise<AuthResponseDto> {
+  async refreshToken(
+    refreshTokenDto: RefreshTokenDto,
+  ): Promise<AuthResponseDto> {
     try {
       // Verify the refresh token
       const payload = this.jwtService.verify(refreshTokenDto.refreshToken, {

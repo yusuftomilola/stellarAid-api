@@ -34,7 +34,9 @@ export class AdminUsersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Get users with pagination and filters (Admin only)' })
+  @ApiOperation({
+    summary: 'Get users with pagination and filters (Admin only)',
+  })
   @ApiResponse({ status: 200, description: 'Users retrieved successfully' })
   async findAll(@Query() query: AdminGetUsersQueryDto) {
     const { data, total } = await this.usersService.findAllForAdmin(query);
@@ -62,10 +64,7 @@ export class AdminUsersController {
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiResponse({ status: 200, description: 'User role updated successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async updateRole(
-    @Param('id') id: string,
-    @Body() dto: UpdateUserRoleDto,
-  ) {
+  async updateRole(@Param('id') id: string, @Body() dto: UpdateUserRoleDto) {
     return this.usersService.updateUserRole(id, dto.role);
   }
 

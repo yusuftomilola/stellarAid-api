@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Project, ProjectStatus } from './entities/project.entity';
@@ -17,14 +21,19 @@ export class ProjectsService {
     @InjectRepository(Donation)
     private readonly donationRepository: Repository<Donation>,
   ) {}
-  ) { }
 
   async create(
     createProjectDto: CreateProjectDto,
     creatorId: string,
   ): Promise<Project> {
-    const { projectName, projectDesc, projectImage, fundingGoal, deadline, category } =
-      createProjectDto;
+    const {
+      projectName,
+      projectDesc,
+      projectImage,
+      fundingGoal,
+      deadline,
+      category,
+    } = createProjectDto;
 
     // Validate that the deadline is in the future
     const deadlineDate = new Date(deadline);

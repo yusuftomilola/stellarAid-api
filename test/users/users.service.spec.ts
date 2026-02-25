@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '../../src/users/users.service';
-import { User, UserRole, KYCStatus } from '../../src/users/entities/user.entity';
+import {
+  User,
+  UserRole,
+  KYCStatus,
+} from '../../src/users/entities/user.entity';
 import { UpdateUserDto } from '../../src/users/dtos/update-user.dto';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 
@@ -45,7 +49,8 @@ describe('UsersService', () => {
       password: 'hashedPassword123',
       firstName: 'John',
       lastName: 'Doe',
-      walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+      walletAddress:
+        'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
       country: 'United States',
       bio: 'Test bio',
       avatarUrl: 'https://example.com/avatar.jpg',
@@ -140,9 +145,9 @@ describe('UsersService', () => {
       it('should handle special characters in id', async () => {
         mockRepository.findOne.mockResolvedValue(null);
 
-        await expect(service.findById('id-with-special-chars-!@#')).rejects.toThrow(
-          NotFoundException,
-        );
+        await expect(
+          service.findById('id-with-special-chars-!@#'),
+        ).rejects.toThrow(NotFoundException);
       });
     });
   });
@@ -248,7 +253,8 @@ describe('UsersService', () => {
 
   describe('updateWalletAddress', () => {
     const userId = '550e8400-e29b-41d4-a716-446655440000';
-    const walletAddress = 'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQ5G3LKYVW4R6IGPCBQVZB';
+    const walletAddress =
+      'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQ5G3LKYVW4R6IGPCBQVZB';
     const mockUser: User = {
       id: userId,
       email: 'test@example.com',
@@ -299,15 +305,23 @@ describe('UsersService', () => {
       it('should update wallet address when user already has one', async () => {
         const userWithWallet = {
           ...mockUser,
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
         };
-        const newWalletAddress = 'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQ5G3LKYVW4R6IGPCBQVZB';
-        const updatedUser = { ...userWithWallet, walletAddress: newWalletAddress };
+        const newWalletAddress =
+          'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQ5G3LKYVW4R6IGPCBQVZB';
+        const updatedUser = {
+          ...userWithWallet,
+          walletAddress: newWalletAddress,
+        };
 
         mockRepository.findOne.mockResolvedValue(userWithWallet);
         mockRepository.save.mockResolvedValue(updatedUser);
 
-        const result = await service.updateWalletAddress(userId, newWalletAddress);
+        const result = await service.updateWalletAddress(
+          userId,
+          newWalletAddress,
+        );
 
         expect(result.walletAddress).toBe(newWalletAddress);
       });
@@ -327,9 +341,9 @@ describe('UsersService', () => {
         const dbError = new Error('Save failed');
         mockRepository.save.mockRejectedValue(dbError);
 
-        await expect(service.updateWalletAddress(userId, walletAddress)).rejects.toThrow(
-          'Save failed',
-        );
+        await expect(
+          service.updateWalletAddress(userId, walletAddress),
+        ).rejects.toThrow('Save failed');
       });
     });
 
@@ -358,7 +372,7 @@ describe('UsersService', () => {
 
   describe('updateProfile', () => {
     const userId = '550e8400-e29b-41d4-a716-446655440000';
-    
+
     // Helper function to create a fresh mock user for each test
     const createMockUser = (): User => ({
       id: userId,
@@ -396,7 +410,8 @@ describe('UsersService', () => {
           country: 'Canada',
           bio: 'Updated bio',
           avatarUrl: 'https://example.com/new-avatar.jpg',
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
         };
 
         const savedUser = {
@@ -501,15 +516,16 @@ describe('UsersService', () => {
 
         const updateDto: UpdateUserDto = { firstName: 'Jane' };
 
-        await expect(service.updateProfile('non-existent-id', updateDto)).rejects.toThrow(
-          NotFoundException,
-        );
+        await expect(
+          service.updateProfile('non-existent-id', updateDto),
+        ).rejects.toThrow(NotFoundException);
       });
 
       it('should throw ConflictException when wallet address already exists (23505 error)', async () => {
         const mockUser = createMockUser();
         const updateDto: UpdateUserDto = {
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
         };
 
         mockRepository.findOne.mockResolvedValue(mockUser);
@@ -633,7 +649,8 @@ describe('UsersService', () => {
           password: 'hashedPassword123',
           firstName: 'John',
           lastName: 'Doe',
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
           country: 'United States',
           bio: 'Test bio',
           avatarUrl: 'https://example.com/avatar.jpg',
@@ -719,7 +736,8 @@ describe('UsersService', () => {
           password: 'hashedPassword123',
           firstName: 'John',
           lastName: 'Doe',
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
           country: null,
           bio: null,
           avatarUrl: null,
@@ -755,7 +773,8 @@ describe('UsersService', () => {
           password: 'hashedPassword123',
           firstName: 'John',
           lastName: 'Doe',
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
           country: null,
           bio: null,
           avatarUrl: null,
@@ -867,7 +886,9 @@ describe('UsersService', () => {
         const dbError = new Error('Database error');
         mockRepository.findOne.mockRejectedValue(dbError);
 
-        await expect(service.getProfile(userId)).rejects.toThrow('Database error');
+        await expect(service.getProfile(userId)).rejects.toThrow(
+          'Database error',
+        );
       });
     });
 
@@ -880,7 +901,8 @@ describe('UsersService', () => {
           password: 'hashedPassword123',
           firstName: 'John',
           lastName: 'Doe',
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
           country: null,
           bio: null,
           avatarUrl: null,
@@ -917,7 +939,8 @@ describe('UsersService', () => {
           password: 'hashedPassword123',
           firstName: 'John',
           lastName: 'Doe',
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
           country: null,
           bio: null,
           avatarUrl: null,

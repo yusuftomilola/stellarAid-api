@@ -1,8 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
-import { GetProjectsQueryDto, ProjectSortBy } from './dtos/get-projects-query.dto';
-import { Project, ProjectStatus, ProjectCategory } from './entities/project.entity';
+import {
+  GetProjectsQueryDto,
+  ProjectSortBy,
+} from './dtos/get-projects-query.dto';
+import {
+  Project,
+  ProjectStatus,
+  ProjectCategory,
+} from './entities/project.entity';
 
 describe('ProjectsController', () => {
   let controller: ProjectsController;
@@ -32,7 +39,8 @@ describe('ProjectsController', () => {
         id: '550e8400-e29b-41d4-a716-446655440000',
         firstName: 'John',
         lastName: 'Doe',
-        walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+        walletAddress:
+          'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
       } as any,
     },
     {
@@ -51,7 +59,8 @@ describe('ProjectsController', () => {
         id: '550e8400-e29b-41d4-a716-446655440000',
         firstName: 'John',
         lastName: 'Doe',
-        walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+        walletAddress:
+          'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
       } as any,
     },
   ];
@@ -324,7 +333,9 @@ describe('ProjectsController', () => {
 
         mockProjectsService.findAll.mockRejectedValue(error);
 
-        await expect(controller.findAll(query)).rejects.toThrow('Database connection failed');
+        await expect(controller.findAll(query)).rejects.toThrow(
+          'Database connection failed',
+        );
         expect(service.findAll).toHaveBeenCalledWith(query);
       });
 

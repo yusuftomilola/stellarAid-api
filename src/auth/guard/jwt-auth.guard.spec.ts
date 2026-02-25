@@ -8,7 +8,7 @@ import { TokenValidationMiddleware } from '../middleware/token-validation.middle
 import { JwtPayload } from '../interfaces/auth.interface';
 import type { Request, Response } from 'express';
 import { IS_PUBLIC_KEY, Public } from '../decorators/public.decorator';
-import { UserRole } from 'src/users/entities/user.entity';
+import { UserRole } from '../../users/entities/user.entity';
 
 function mockContext(isPublic = false): ExecutionContext {
   const handler = isPublic

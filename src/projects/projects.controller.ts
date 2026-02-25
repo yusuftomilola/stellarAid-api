@@ -35,7 +35,7 @@ import { UserRole } from '../users/entities/user.entity';
 @ApiBearerAuth()
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) { }
+  constructor(private readonly projectsService: ProjectsService) {}
 
   @Public()
   @Get()
@@ -71,13 +71,12 @@ export class ProjectsController {
   @ApiCreatedResponse({ description: 'Project created successfully' })
   @ApiBadRequestResponse({ description: 'Invalid input data' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @ApiForbiddenResponse({ description: 'Forbidden – only CREATOR role allowed' })
+  @ApiForbiddenResponse({
+    description: 'Forbidden – only CREATOR role allowed',
+  })
   async create(@Body() createProjectDto: CreateProjectDto, @Request() req) {
     const userId = req.user.sub;
-    const project = await this.projectsService.create(
-      createProjectDto,
-      userId,
-    );
+    const project = await this.projectsService.create(createProjectDto, userId);
     return project;
   }
 }

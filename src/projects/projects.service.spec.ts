@@ -1,10 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ProjectsService } from './projects.service';
-import { Project, ProjectStatus, ProjectCategory } from './entities/project.entity';
+import {
+  Project,
+  ProjectStatus,
+  ProjectCategory,
+} from './entities/project.entity';
 import { Donation } from './entities/donation.entity';
-import { GetProjectsQueryDto, ProjectSortBy } from './dtos/get-projects-query.dto';
+import {
+  GetProjectsQueryDto,
+  ProjectSortBy,
+} from './dtos/get-projects-query.dto';
 
 describe('ProjectsService', () => {
   let service: ProjectsService;
@@ -76,7 +83,8 @@ describe('ProjectsService', () => {
           id: '550e8400-e29b-41d4-a716-446655440000',
           firstName: 'John',
           lastName: 'Doe',
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
         } as any,
       },
       {
@@ -95,7 +103,8 @@ describe('ProjectsService', () => {
           id: '550e8400-e29b-41d4-a716-446655440000',
           firstName: 'John',
           lastName: 'Doe',
-          walletAddress: 'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
+          walletAddress:
+            'GAA2M7F4E3C4D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6',
         } as any,
       },
     ];
@@ -112,14 +121,20 @@ describe('ProjectsService', () => {
 
         expect(result).toEqual({ data: mockProjects, total });
         expect(repository.createQueryBuilder).toHaveBeenCalledWith('project');
-        expect(mockQueryBuilder.leftJoin).toHaveBeenCalledWith('project.creator', 'creator');
+        expect(mockQueryBuilder.leftJoin).toHaveBeenCalledWith(
+          'project.creator',
+          'creator',
+        );
         expect(mockQueryBuilder.where).toHaveBeenCalledWith(
           'project.status IN (:...statuses)',
           {
             statuses: [ProjectStatus.APPROVED, ProjectStatus.ACTIVE],
           },
         );
-        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith('project.createdAt', 'DESC');
+        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+          'project.createdAt',
+          'DESC',
+        );
         expect(mockQueryBuilder.skip).toHaveBeenCalledWith(0);
         expect(mockQueryBuilder.take).toHaveBeenCalledWith(10);
       });
@@ -207,7 +222,10 @@ describe('ProjectsService', () => {
 
         await service.findAll(query);
 
-        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith('project.createdAt', 'DESC');
+        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+          'project.createdAt',
+          'DESC',
+        );
       });
 
       it('should sort by most funded', async () => {
@@ -220,7 +238,10 @@ describe('ProjectsService', () => {
 
         await service.findAll(query);
 
-        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith('project.fundsRaised', 'DESC');
+        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+          'project.fundsRaised',
+          'DESC',
+        );
       });
 
       it('should sort by ending soon', async () => {
@@ -233,7 +254,10 @@ describe('ProjectsService', () => {
 
         await service.findAll(query);
 
-        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith('project.deadline', 'ASC');
+        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+          'project.deadline',
+          'ASC',
+        );
       });
 
       it('should apply pagination with custom limit and offset', async () => {
@@ -279,7 +303,10 @@ describe('ProjectsService', () => {
           '(LOWER(project.title) LIKE :search OR LOWER(project.description) LIKE :search)',
           { search: '%children%' },
         );
-        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith('project.fundsRaised', 'DESC');
+        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+          'project.fundsRaised',
+          'DESC',
+        );
         expect(mockQueryBuilder.skip).toHaveBeenCalledWith(5);
         expect(mockQueryBuilder.take).toHaveBeenCalledWith(20);
       });
@@ -315,7 +342,10 @@ describe('ProjectsService', () => {
         const result = await service.findAll(query);
 
         expect(result.data).toEqual(projectsWithoutDeadline);
-        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith('project.deadline', 'ASC');
+        expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+          'project.deadline',
+          'ASC',
+        );
       });
     });
 
@@ -326,7 +356,9 @@ describe('ProjectsService', () => {
 
         mockQueryBuilder.getCount.mockRejectedValue(dbError);
 
-        await expect(service.findAll(query)).rejects.toThrow('Database connection failed');
+        await expect(service.findAll(query)).rejects.toThrow(
+          'Database connection failed',
+        );
       });
 
       it('should handle database error during getMany', async () => {
@@ -336,7 +368,9 @@ describe('ProjectsService', () => {
         mockQueryBuilder.getCount.mockResolvedValue(2);
         mockQueryBuilder.getMany.mockRejectedValue(dbError);
 
-        await expect(service.findAll(query)).rejects.toThrow('Query execution failed');
+        await expect(service.findAll(query)).rejects.toThrow(
+          'Query execution failed',
+        );
       });
 
       it('should handle unexpected error from repository', async () => {
@@ -347,7 +381,9 @@ describe('ProjectsService', () => {
           throw unexpectedError;
         });
 
-        await expect(service.findAll(query)).rejects.toThrow('Unexpected error');
+        await expect(service.findAll(query)).rejects.toThrow(
+          'Unexpected error',
+        );
       });
     });
 

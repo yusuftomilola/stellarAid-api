@@ -113,7 +113,9 @@ export class UsersService {
     }
 
     if (query.kyc_status) {
-      qb.andWhere('user.kycStatus = :kycStatus', { kycStatus: query.kyc_status });
+      qb.andWhere('user.kycStatus = :kycStatus', {
+        kycStatus: query.kyc_status,
+      });
     }
 
     if (query.created_date) {

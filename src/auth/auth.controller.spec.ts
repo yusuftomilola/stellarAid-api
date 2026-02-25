@@ -66,6 +66,8 @@ describe('AuthController', () => {
         password: 'password123',
       };
 
+      const mockReq = {} as Request;
+
       const expectedResult = {
         accessToken: 'jwt-token',
         refreshToken: 'refresh-token',
@@ -81,10 +83,10 @@ describe('AuthController', () => {
 
       jest.spyOn(authService, 'login').mockResolvedValue(expectedResult as any);
 
-      const result = await authController.login(loginDto);
+      const result = await authController.login(loginDto, mockReq);
 
       expect(result).toEqual(expectedResult);
-      expect(authService.login).toHaveBeenCalledWith(loginDto);
+      expect(authService.login).toHaveBeenCalledWith(loginDto, mockReq);
     });
   });
 });
