@@ -7,6 +7,7 @@ import { Project } from 'src/projects/entities/project.entity';
 import { ProjectsController } from 'src/projects/projects.controller';
 import { ProjectsService } from 'src/projects/providers/projects.service';
 import { SearchService } from 'src/projects/services/search.service';
+import { ImageUploadService } from 'src/projects/services/image-upload.service';
 
 describe('ProjectsController', () => {
   let controller: ProjectsController;
@@ -22,6 +23,11 @@ describe('ProjectsController', () => {
   const mockSearchService = {
     searchProjects: jest.fn(),
     getSearchAnalytics: jest.fn(),
+  // Mock ImageUploadService
+  const mockImageUploadService = {
+    uploadImages: jest.fn(),
+    getProjectImages: jest.fn(),
+    deleteImage: jest.fn(),
   };
 
   // Mock project data
@@ -79,6 +85,8 @@ describe('ProjectsController', () => {
         {
           provide: SearchService,
           useValue: mockSearchService,
+          provide: ImageUploadService,
+          useValue: mockImageUploadService,
         },
       ],
     }).compile();
